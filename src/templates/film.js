@@ -1,14 +1,14 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
 import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Seo from "../components/seo"
 const Film = ({ data }) => {
   const { filmTitle, filmDescription, markdownContent, filmStills } =
     data.contentfulVideoDetails
   return (
     <Layout>
       {console.log(data.contentfulVideoDetails)}
-      <SEO title={filmTitle} />
+      <Seo title={filmTitle} />
       <h1>{filmTitle}</h1>
       <div
         dangerouslySetInnerHTML={{
