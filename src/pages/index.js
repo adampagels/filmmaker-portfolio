@@ -1,5 +1,5 @@
 import * as React from "react"
-// import { Link } from "gatsby"
+import { Link } from "gatsby"
 import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
@@ -10,10 +10,7 @@ const ImageWrapper = styled.div`
   align-items: center;
   background-color: black;
   display: flex;
-  min-width: 100px;
-  max-width: 370px;
-  margin: 10px;
-  width: 80vw;
+  position: relative;
 `
 
 const FilmsContainer = styled.div`
@@ -22,31 +19,71 @@ const FilmsContainer = styled.div`
   justify-content: center;
 `
 
-const Image = styled.img``
+const FilmTitle = styled.h2`
+  color: white;
+  left: 50%;
+  opacity: 0;
+  position: absolute;
+  text-decoration: none;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.7s;
+  z-index: 1;
+`
+
+const Image = styled.img`
+  postion: relative;
+`
+
+const ImageLink = styled(Link)`
+  align-items: center;
+  background-color: black;
+  display: flex;
+  flex-basis: 10%;
+  flex-grow: 1;
+  margin: 8px;
+  min-width: 363px;
+
+  &:hover {
+    ${FilmTitle} {
+      color: white;
+      opacity: 1;
+    }
+    ${Image} {
+      opacity: 0.5;
+    }
+    filter: brightness(100%);
+  }
+`
 
 const Index = ({ data }) => {
   const films = data.allContentfulVideoDetails.edges
-  console.log(data)
   return (
     <Layout>
       <Seo title="Films" />
-      <h1>hey</h1>
       <FilmsContainer>
         {films &&
           films.map(({ node: film }) => {
             return (
-              <ImageWrapper>
-                <Image
-                  alt={film.filmTitle}
-                  src={`${film.filmThumbnail.file.url}`}
-                />
-              </ImageWrapper>
+              <>
+                <ImageLink to={`/films/${film.slug}`}>
+                  <ImageWrapper>
+                    <Image
+                      alt={film.filmTitle}
+                      src={`${film.filmThumbnail.file.url}`}
+                    />
+                    <FilmTitle>{film.filmTitle}</FilmTitle>
+                  </ImageWrapper>
+                </ImageLink>
+              </>
             )
           })}
         <>
-          <ImageWrapper>
-            <img src={films[0].node.filmThumbnail.file.url} />
-          </ImageWrapper>
+          <ImageLink to={`/`}>
+            <ImageWrapper>
+              <Image src={films[0].node.filmThumbnail.file.url} />
+            </ImageWrapper>
+          </ImageLink>
         </>
       </FilmsContainer>
     </Layout>
